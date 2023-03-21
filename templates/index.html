@@ -1,0 +1,21 @@
+<h1>Welcome!<h1>
+{% if session.username %}
+<p>Logged in as {{ session.username }}</p>
+<a href="/logout">Log out</a>
+{% else %}
+<p>
+<h3>You must be logged in to access Keskustelupalsta<h3>
+<p>Login:<br>
+<form action="/logincheck" method="POST">
+<p>Username:<br>
+<input type="text" name="username"></p>
+<p>Password:<br>
+<input type="password" name="password"></p>
+<input type="submit" value="Log in">
+</form>
+{% if error %}
+{{ error }}
+{% endif %}
+<hr>
+Dont have an account? <a href="/makeaccount">Click here to make an account</a>
+{% endif %}
