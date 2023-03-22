@@ -1,5 +1,6 @@
 from app import app
 from db import db
+import users
 from flask import render_template, request, session, redirect
 from sqlalchemy import text
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -16,20 +17,8 @@ def index():
 def logincheck():
     username = request.form["username"]
     password = request.form["password"]
-    sql = "SELECT id, password FROM users WHERE username=:username"
-    result = db.session.execute(text(sql), {"username":username})
-    user = result.fetchone()    
-    if not user:
-        session["errormessage"] = "User doesn't exist"
-        return redirect("/")
-    else:
-        hash_value = user.password
-        if check_password_hash(hash_value, password):
-            session["username"] = username
-            return redirect("/")
-        else:
-            session["errormessage"] = "Wrong password"
-            return redirect("/")
+    users.check_login(username, password)
+    return redirect("/")
 
 @app.route("/makeaccount")
 def makeaccount():
@@ -43,17 +32,10 @@ def makeaccount():
 def create():
     username = request.form["username"]
     password = request.form["password"]
-    hash_value = generate_password_hash(password)
-    sql = "SELECT 1 FROM users WHERE username=:username"
-    result = db.session.execute(text(sql), {"username":username})
-    exists = result.fetchone()
-    if exists:
-        session["errormessage"] = "Username already taken"
+    result = users.make_account(username, password)
+    if result == 0:
         return redirect("/makeaccount")
-    sql = "INSERT INTO users (username, password, admin) VALUES (:username, :password, FALSE)"
-    db.session.execute(text(sql), {"username":username, "password":hash_value})
-    db.session.commit()
-    return redirect("/")
+    return redirect ("/")
 
 @app.route("/logout")
 def logout():
