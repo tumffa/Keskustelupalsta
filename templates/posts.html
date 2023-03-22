@@ -1,0 +1,22 @@
+{% if list %}
+<h1>{{ topicname }}</h1>
+<p><br>
+<a href="/{{ topicname }}/createpost">Create new post</a>
+<p>
+<hr>
+<h3>Posts:</h3>
+<ul>
+{% for post in list %}
+<li>
+<b>{{ post.name }}</b><br>
+{{ post.description }}
+<p>
+{% endfor %}
+</ul>
+{% else %}
+<h1>This topic has not posts :(</h2>
+<p>
+<a href="/{{ topicname }}/createpost">Create post</a>
+{% endif %}
+<p><br>
+<a href="/">Go back</a>

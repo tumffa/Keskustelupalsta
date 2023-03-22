@@ -1,10 +1,29 @@
-<h1>Welcome!<h1>
 {% if session.username %}
-<p>Logged in as {{ session.username }}</p>
-<a href="/logout">Log out</a>
-{% else %}
+<h1>Welcome, {{ session.username }}!</h1>
 <p>
-<h3>You must be logged in to access Keskustelupalsta<h3>
+<br>
+<h2>Topics:</h2>
+<hr>
+<ul>
+{% for topic in topics %}
+<p>
+<li>
+<b><a href="/{{ topic.name }}">{{ topic.name }}</a></b> <br>
+{{ topic.description }}
+<p>
+{% endfor %}
+<br>
+<li><a href="/createtopic">create new topic</a>
+</ul>
+<p>
+<hr>
+<br><br>
+<a href="/logout">Log out</a>
+
+{% else %}
+<h1>Welcome!</h1>
+<p>
+<h3>You must be logged in to access <i>Keskustelupalsta</i></h3><br>
 <p>Login:<br>
 <form action="/logincheck" method="POST">
 <p>Username:<br>
@@ -16,6 +35,7 @@
 {% if error %}
 {{ error }}
 {% endif %}
+<br>
 <hr>
 Dont have an account? <a href="/makeaccount">Click here to make an account</a>
 {% endif %}
