@@ -1,9 +1,9 @@
 <h2>Create post:</h2>
 <form action="/addpost" method="POST">
-<p>Topic name:<br>
+<p>Post title:<br>
 <input type="text" name="Title"></p>
-<p>Topic description:<br>
-<input type="text" name="Text"></p>
+<textarea name="Text" rows="20" cols="100">
+</textarea><br>
 <input type="hidden" name="topic_id" value={{ topic_id }}>
 <input type="submit" value="Create post">
 </form>

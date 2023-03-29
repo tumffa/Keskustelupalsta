@@ -1,0 +1,18 @@
+<h2><b>{{ post.name }}</b></h2>
+{{ post.description }}<p>
+<hr>
+<li><b>Posted by:</b> {{ name }}, {{ post.date }}<br>
+
+<hr>
+<a href="./{{ post.id }}/comment">comment</a>
+<p>
+<br>
+{% for answer in answers %}
+-<b>{{ answer.username }}</b>, {{ answer.date }} <br>
+{{ answer.description }}
+<p>
+<br>
+{% endfor %}
+<p>
+<hr>
+<a href="/{{ topic }}">Go back</a>

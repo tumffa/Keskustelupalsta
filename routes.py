@@ -2,6 +2,7 @@ from app import app
 import users
 import topics
 import posts
+import comments
 from flask import render_template, request, session, redirect
 from sqlalchemy import text
 
@@ -86,3 +87,39 @@ def addpost():
     if "errormessage" in session:
         return redirect(page + "/createpost")
     return redirect(page)
+
+
+@app.route("/<string:topic>/<int:id>")
+def post(topic, id):
+    contents = posts.get_post(id)
+    answers = comments.postcomments(id)
+    post = contents[0]
+    name = contents[1]
+    return render_template("post.html", post=post, name=name, topicname=topic, answers=answers, topic=topic)
+
+@app.route("/<string:topic>/<int:id>/comment")
+def comment(topic, id):
+    error = ""
+    if "errormessage" in session:
+        error = session["errormessage"]
+        del session["errormessage"]
+    post_url = request.base_url.replace("/comment", "")
+    contents = posts.get_post(id)
+    post = contents[0]
+    name = contents[1]
+    return render_template("comment.html", post=post, name=name, topicname=topic, post_url=post_url, post_id=id, error=error)
+
+@app.route("/addcomment", methods=["POST"])
+def addcomment():
+    post_url = request.form["post_url"]
+    post_id = request.form["post_id"]
+    content = request.form["comment"]
+    username = session["username"]
+
+    result = comments.createcomment(post_id, username, content)
+
+    if result == 0:
+        page = post_url + "/comment"
+        return redirect(page)
+    else:
+        return redirect(post_url)

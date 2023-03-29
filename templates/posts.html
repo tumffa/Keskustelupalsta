@@ -8,8 +8,9 @@
 <ul>
 {% for post in list %}
 <li>
-<b>{{ post.name }}</b><br>
-{{ post.description }}
+<b>{{ post.name }}</b> Posted by: <b>{{ post.username }}</b>, {{ post.date }}<br>
+{{ post.description }}<p>
+<a href="{{ topicname }}/{{ post.id }}">Enter discussion</a>
 <p>
 {% endfor %}
 </ul>
