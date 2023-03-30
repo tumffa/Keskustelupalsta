@@ -9,8 +9,8 @@ Kekustelupalstasovellus:
 
 -Käyttäjä pystyy lisäämään alueelle uusia viestejä, joille voi antaa otsikon ja kuvauksen.
 
--Käyttäjä pystyy lisäämään ketjuun viestejä.
+-Käyttäjä pystyy kommentoimaan viestejä ja vastaamaan kommentteihin.
 
--Käyttäjä pystyy muokkaamaan tai poistamaan viestin.
+-Käyttäjä pystyy muokkaamaan tai poistamaan alueen, viestin, kommentin tai vastauksen.
 
--Viestiketjussa näkyy kaikki viestit, niiden kirjoittaja ja lähetysajankohta.
+-Viestiketjussa näkyy kaikki viestit ja kommentit ja niiden kirjoittaja ja lähetysajankohta, sekä vastaukset kommentteihin.
