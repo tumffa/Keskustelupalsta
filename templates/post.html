@@ -1,15 +1,33 @@
 <h2><b>{{ post.name }}</b></h2>
 {{ post.description }}<p>
+<li><b>Posted by:</b> {{ name }}, {{ post.date }}
+{% if name == session.username %}
+<a href="/delete/post/{{ post.id }}">delete post</a>
+{% endif %}
+<br><a href="./{{ post.id }}/comment">comment</a>
 <hr>
-<li><b>Posted by:</b> {{ name }}, {{ post.date }}<br>
-
-<hr>
-<a href="./{{ post.id }}/comment">comment</a>
+<h3>Comments:</h3>
 <p>
 <br>
 {% for answer in answers %}
--<b>{{ answer.username }}</b>, {{ answer.date }} <br>
-{{ answer.description }}
+<b>{{ answer[0].username }}</b>, {{ answer[0].date }} 
+{% if answer[0].username == session.username %}
+<a href="/delete/comment/{{ answer[0].id }}">delete comment</a>
+{% endif %}
+<br>
+-{{ answer[0].description }}
+<ul>
+{% if answer[1] %}
+{% for response in answer[1] %}
+<li><b>{{ response.username }}:</b> {{ response.description }}
+{% if response.username == session.username %}
+<br><a href="/delete/response/{{ response.id }}">delete</a>
+{% endif %}
+<p>
+{% endfor %}
+{% endif %}
+<li><a href="./{{ post.id }}/{{ answer[0].id }}/respond">respond</a>
+</ul>
 <p>
 <br>
 {% endfor %}

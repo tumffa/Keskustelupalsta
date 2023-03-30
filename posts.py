@@ -39,3 +39,13 @@ def get_post(id):
     sql = "SELECT username FROM users WHERE id=:user_id"
     name = db.session.execute(text(sql), {"user_id":user_id})
     return (result, name.fetchone()[0])
+
+def delete_post(id):
+    sql = "SELECT username FROM posts WHERE id=:id"
+    name = db.session.execute(text(sql), {"id":id}).fetchone()[0]
+    if session["username"] != name:
+        return 0
+    sql = "DELETE FROM posts WHERE id=:id"
+    db.session.execute(text(sql), {"id":id})
+    db.session.commit()
+    return

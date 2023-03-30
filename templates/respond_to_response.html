@@ -1,0 +1,17 @@
+-<b>{{ comment.username }}</b>, {{ comment.date }} <br>
+{{ comment.description }}
+<hr><p><br>
+Write your comment here:
+<form action="/addresponse" method="POST">
+<textarea name="comment" rows="20" cols="100">
+</textarea><br>
+<input type="hidden" name="post_url" value={{ post_url }}>
+<input type="hidden" name="comment_id" value={{ comment_id }}>
+<input type="hidden" name="type" value="comment">
+<p>
+<input type="submit" value="Comment">
+</form>
+<p>
+{{ error }}
+<p><br>
+<a href="/{{ topicname }}/{{ post_id }}">Go back</a>

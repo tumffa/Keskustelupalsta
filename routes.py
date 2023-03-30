@@ -65,7 +65,8 @@ def topiccheck():
 def topic(name):
     id = topics.get_topic_id(name)
     list = posts.topicposts(id)
-    return render_template("posts.html", list=list, topicname=name)
+    owner_name = topics.get_topic_owner(id)
+    return render_template("posts.html", list=list, topicname=name, id=id, owner_name=owner_name)
 
 @app.route("/<string:name>/createpost")
 def createpost(name):
@@ -93,6 +94,7 @@ def addpost():
 def post(topic, id):
     contents = posts.get_post(id)
     answers = comments.postcomments(id)
+    session["url"] = request.base_url
     post = contents[0]
     name = contents[1]
     return render_template("post.html", post=post, name=name, topicname=topic, answers=answers, topic=topic)
@@ -123,3 +125,55 @@ def addcomment():
         return redirect(page)
     else:
         return redirect(post_url)
+
+@app.route("/<string:topic>/<int:post_id>/<int:comment_id>/respond")
+def respond(topic, post_id, comment_id):
+    error = ""
+    if "errormessage" in session:
+        error = session["errormessage"]
+        del session["errormessage"]
+    post_url = request.base_url
+    content = comments.comment_and_responses(comment_id)
+    return render_template("respond_to_comment.html", comment_id=comment_id, comment=content[0], responses=content[1], topicname=topic, post_url=post_url, post_id=post_id, error=error)
+
+@app.route("/addresponse", methods=["POST"])
+def addresponse():
+    post_url = request.form["post_url"]
+    comment_id = request.form["comment_id"]
+    content = request.form["response"]
+    username = session["username"]
+
+    result = comments.createresponse(comment_id, username, content)
+
+    if result == 0:
+        return redirect(post_url)
+    else:
+        index = len(("/" + str(comment_id) + "/respond"))
+        post_url = post_url[:len(post_url) - index]
+        return redirect(post_url)
+    
+@app.route("/delete/<string:type>/<int:id>")
+def delete(type, id):
+    return render_template("commitdelete.html", type=type, id=id)
+
+@app.route("/commitdelete", methods=["POST"])
+def commitdelete():
+    type = request.form["type"]
+    id = request.form["id"]
+    if type == "response":
+        result = comments.delete_response(id)
+    if type == "comment":
+        result = comments.delete_comment(id)
+    if type == "post":
+        result = posts.delete_post(id)
+    if type == "topic":
+        result = topics.delete_topic(id)
+
+    if result == 0:
+        return "Permission denied"
+    if type == "topic":
+        return redirect("/")
+    elif type == "post":
+        length = len(session["url"])
+        session["url"] = session["url"][:length - len(str(id))-1]
+    return redirect(session["url"])

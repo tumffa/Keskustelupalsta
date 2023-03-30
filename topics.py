@@ -27,3 +27,23 @@ def get_topic_id(name):
     sql = "SELECT id FROM topics WHERE name=:name"
     result = db.session.execute(text(sql), {"name":name})
     return result.fetchone()[0]
+
+def get_topic_owner(id):
+    if id == 1:
+        return ""
+    sql = "SELECT owner_id FROM topics WHERE id=:id"
+    owner_id = db.session.execute(text(sql), {"id":id}).fetchone()[0]
+    sql ="SELECT username FROM users WHERE id=:id"
+    return db.session.execute(text(sql), {"id":owner_id}).fetchone()[0]
+
+def delete_topic(id):
+    sql = "SELECT owner_id FROM topics WHERE id=:id"
+    owner_id = db.session.execute(text(sql), {"id":id}).fetchone()[0]
+    sql = "SELECT username FROM users WHERE id=:id"
+    name = db.session.execute(text(sql), {"id":owner_id}).fetchone()[0]
+    if session["username"] != name:
+        return 0
+    sql = "DELETE FROM topics WHERE id=:id"
+    db.session.execute(text(sql), {"id":id})
+    db.session.commit()
+    return

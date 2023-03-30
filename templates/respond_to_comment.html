@@ -1,0 +1,25 @@
+-<b>{{ comment.username }}</b>, {{ comment.date }} <br>
+{{ comment.description }}<p>
+{% if responses %}
+<ul>
+{% for response in responses %}
+<li><b>{{ response.username }}:</b> {{ response.description }}
+<p>
+{% endfor %}
+</ul>
+<hr>
+{% endif %}
+<p>
+Write your response here:
+<form action="/addresponse" method="POST">
+<textarea name="response" rows="20" cols="100">
+</textarea><br>
+<input type="hidden" name="post_url" value={{ post_url }}>
+<input type="hidden" name="comment_id" value={{ comment_id }}>
+<p>
+<input type="submit" value="Respond">
+</form>
+<p>
+{{ error }}
+<p><br>
+<a href="/{{ topicname }}/{{ post_id }}">Go back</a>

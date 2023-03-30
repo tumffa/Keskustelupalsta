@@ -4,17 +4,15 @@
 <br>
 <h2>Topics:</h2>
 <hr>
-<ul>
 {% for topic in topics %}
 <p>
-<li>
-<b><a href="/{{ topic.name }}">{{ topic.name }}</a></b> <br>
+<h3><b><a href="/{{ topic.name }}">{{ topic.name }}</a></b></h3>
 {{ topic.description }}
 <p>
+<br>
 {% endfor %}
 <br>
 <li><a href="/createtopic">create new topic</a>
-</ul>
 <p>
 <hr>
 <br><br>

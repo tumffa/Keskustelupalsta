@@ -2,6 +2,9 @@
 <h1>{{ topicname }}</h1>
 <p><br>
 <a href="/{{ topicname }}/createpost">Create new post</a>
+{% if owner_name == session.username %}
+, <a href="/delete/topic/{{ id }}">delete topic</a>
+{% endif %}
 <p>
 <hr>
 <h3>Posts:</h3>
