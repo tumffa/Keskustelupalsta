@@ -21,6 +21,9 @@
 <h1>This topic has not posts :(</h2>
 <p>
 <a href="/{{ topicname }}/createpost">Create post</a>
+{% if owner_name == session.username %}
+, <a href="/delete/topic/{{ id }}">delete topic</a>
+{% endif %}
 {% endif %}
 <p><br>
 <a href="/">Go back</a>
