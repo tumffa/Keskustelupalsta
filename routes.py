@@ -31,7 +31,12 @@ def logincheck():
     return redirect("/")
 
 def check_user():
-    if "username" not in session:
+    try:
+        if "username" not in session:
+            return 0
+        else:
+            return
+    except:
         return 0
 
 @app.route("/makeaccount")
