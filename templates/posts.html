@@ -1,7 +1,7 @@
 {% if list %}
 <h1>{{ topicname }}</h1>
 <p><br>
-<a href="/{{ topicname }}/createpost">Create new post</a>
+<a href="/topics/{{ topicname }}/createpost">Create new post</a>
 {% if owner_name == session.username %}
 , <a href="/delete/topic/{{ id }}">delete topic</a>
 {% endif %}
@@ -13,14 +13,14 @@
 <li>
 <b>{{ post.name }}</b> Posted by: <b>{{ post.username }}</b>, {{ post.date }}<br>
 {{ post.description }}<p>
-<a href="{{ topicname }}/{{ post.id }}">Enter discussion</a>
+<a href="/topics/{{ topicname }}/{{ post.id }}">Enter discussion</a>
 <p>
 {% endfor %}
 </ul>
 {% else %}
 <h1>This topic has not posts :(</h2>
 <p>
-<a href="/{{ topicname }}/createpost">Create post</a>
+<a href="/topics/{{ topicname }}/createpost">Create post</a>
 {% if owner_name == session.username %}
 , <a href="/delete/topic/{{ id }}">delete topic</a>
 {% endif %}

@@ -86,7 +86,7 @@ def topiccheck():
         return redirect("/createtopic")
     return redirect("/")
 
-@app.route("/<string:name>")
+@app.route("/topics/<string:name>")
 def topic(name):
     if check_user() == 0:
         return redirect("/")
@@ -95,7 +95,7 @@ def topic(name):
     owner_name = topics.get_topic_owner(id)
     return render_template("posts.html", list=list, topicname=name, id=id, owner_name=owner_name)
 
-@app.route("/<string:name>/createpost")
+@app.route("/topics/<string:name>/createpost")
 def createpost(name):
     if check_user() == 0:
         return redirect("/")
@@ -109,7 +109,7 @@ def createpost(name):
 @app.route("/addpost", methods=["POST"])
 def addpost():
     topic_name = request.form["topic_name"]
-    page = "/" + topic_name
+    page = "/topics/" + topic_name
     if check_user() == 0:
         return redirect("/")
     if session["csrf_token"] != request.form["csrf_token"]:
@@ -125,7 +125,7 @@ def addpost():
     return redirect(page)
 
 
-@app.route("/<string:topic>/<int:id>")
+@app.route("/topics/<string:topic>/<int:id>")
 def post(topic, id):
     if check_user() == 0:
         return redirect("/")
@@ -136,7 +136,7 @@ def post(topic, id):
     name = contents[1]
     return render_template("post.html", post=post, name=name, topicname=topic, answers=answers, topic=topic)
 
-@app.route("/<string:topic>/<int:id>/comment")
+@app.route("/topics/<string:topic>/<int:id>/comment")
 def comment(topic, id):
     if check_user() == 0:
         return redirect("/")
@@ -170,7 +170,7 @@ def addcomment():
     else:
         return redirect(post_url)
 
-@app.route("/<string:topic>/<int:post_id>/<int:comment_id>/respond")
+@app.route("/topics/<string:topic>/<int:post_id>/<int:comment_id>/respond")
 def respond(topic, post_id, comment_id):
     if check_user() == 0:
         return redirect("/")
