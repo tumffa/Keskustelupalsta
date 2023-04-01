@@ -1,4 +1,4 @@
-Kekustelupalstasovellus:
+Keskustelupalstasovellus:
 
 
 -Mahdollisuus luoda tunnus ja kirjautua sisään
@@ -14,3 +14,5 @@ Kekustelupalstasovellus:
 -Käyttäjä pystyy muokkaamaan tai poistamaan alueen, viestin, kommentin tai vastauksen.
 
 -Viestiketjussa näkyy kaikki viestit ja kommentit ja niiden kirjoittaja ja lähetysajankohta, sekä vastaukset kommentteihin.
+
+Fly.io sivu: https://keskustelupalsta.fly.dev/
