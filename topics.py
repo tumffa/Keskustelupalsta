@@ -15,6 +15,19 @@ def create_topic(name, description, username):
     if exists:
         session["errormessage"] = "Topic with this name already exists"
         return 0
+    
+    if len(name) < 1:
+        session["errormessage"] = "Topic name has to be atleast 1 character long"
+        return 0
+    
+    if len(name) > 50:
+        session["errormessage"] = "Topic name can't be longer than 50 characters"
+        return 0
+    
+    if len(description) > 100:
+        session["errormessage"] = "Topic description can't be longer than 100 characters"
+        return 0
+    
     sql = "SELECT id FROM users WHERE username=:username"
     result = db.session.execute(text(sql), {"username":username})
     id = result.fetchone()[0]

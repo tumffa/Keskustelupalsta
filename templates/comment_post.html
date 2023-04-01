@@ -5,6 +5,7 @@
 <form action="/addcomment" method="POST">
 <input type="text" name="comment"></p>
 <input type="hidden" name="topic_id" value={{ topic_id }}>
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 <input type="submit" value="Comment">
 </form>
 {{ error }}

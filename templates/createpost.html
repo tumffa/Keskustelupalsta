@@ -5,6 +5,8 @@
 <textarea name="Text" rows="20" cols="100">
 </textarea><br>
 <input type="hidden" name="topic_id" value={{ topic_id }}>
+<input type="hidden" name="topic_name" value={{ topicname }}>
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 <input type="submit" value="Create post">
 </form>
 {{ error }}

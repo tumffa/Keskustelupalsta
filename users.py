@@ -3,6 +3,7 @@ from db import db
 from sqlalchemy import text
 from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
+from secrets import token_hex
 
 def check_login(username, password):
     sql = "SELECT id, password FROM users WHERE username=:username"
@@ -14,9 +15,11 @@ def check_login(username, password):
         hash_value = user.password
         if check_password_hash(hash_value, password):
             session["username"] = username
+            session["csrf_token"] = token_hex(16)
         else:
             session["errormessage"] = "Wrong password"
     return
+
 
 def make_account(username, password):
     hash_value = generate_password_hash(password)
@@ -35,6 +38,11 @@ def make_account(username, password):
     if len(password) < 4:
         session["errormessage"] = "Password is too short"
         return 0
+    
+    if len(password) > 80:
+        session["errormessage"] = "Password is too long"
+        return 0
+    
     sql = "INSERT INTO users (username, password, admin) VALUES (:username, :password, FALSE)"
     db.session.execute(text(sql), {"username":username, "password":hash_value})
     db.session.commit()

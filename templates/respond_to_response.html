@@ -7,6 +7,7 @@ Write your comment here:
 </textarea><br>
 <input type="hidden" name="post_url" value={{ post_url }}>
 <input type="hidden" name="comment_id" value={{ comment_id }}>
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 <input type="hidden" name="type" value="comment">
 <p>
 <input type="submit" value="Comment">

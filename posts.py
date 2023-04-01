@@ -19,6 +19,14 @@ def create_post(topic_id, username, name, description):
         session["errormessage"] = "Post title has to be atleast 1 character long"
         return topic_name
     
+    if len(name) > 250:
+        session["errormessage"] = "Post title can't be longer than 250 characters"
+        return topic_name
+
+    if len(description) > 4000:
+        session["errormessage"] = "Max 4000 characters"
+        return topic_name
+
     sql = "SELECT id FROM users WHERE username=:username"
     result = db.session.execute(text(sql), {"username":username})
     user_id = result.fetchone()[0]

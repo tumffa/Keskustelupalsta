@@ -2,4 +2,5 @@
 <form action="/commitdelete" method="POST">
 <input type="hidden" name="type" value={{ type }}>
 <input type="hidden" name="id" value={{ id }}>
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 <input type="submit" value="Delete">

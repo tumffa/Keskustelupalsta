@@ -18,6 +18,10 @@ def createcomment(post_id, username, content):
         session["errormessage"] = "Comment should be atleast 1 character long"
         return 0
     
+    if len(content) > 3000:
+        session["errormessage"] = "Max 3000 characters"
+        return 0
+    
     now = datetime.now()
     date = now.strftime("%m/%d/%Y, %H:%M:%S")
 
@@ -53,6 +57,10 @@ def createresponse(comment_id, username, content):
     
     if len(content) < 1:
         session["errormessage"] = "Comment should be atleast 1 character long"
+        return 0
+    
+    if len(content) > 2000:
+        session["errormessage"] = "Max 2000 characters"
         return 0
     
     now = datetime.now()

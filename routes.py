@@ -22,6 +22,10 @@ def logincheck():
     users.check_login(username, password)
     return redirect("/")
 
+def check_user():
+    if "username" not in session:
+        return 0
+
 @app.route("/makeaccount")
 def makeaccount():
     error = ""
@@ -42,10 +46,13 @@ def create():
 @app.route("/logout")
 def logout():
     del session["username"]
+    del session["csrf_token"]
     return redirect("/")
 
 @app.route("/createtopic")
 def createtopic():
+    if check_user() == 0:
+        return redirect("/")
     error = ""
     if "errormessage" in session:
         error = session["errormessage"]
@@ -54,6 +61,11 @@ def createtopic():
 
 @app.route("/topiccheck", methods=["POST"])
 def topiccheck():
+    if check_user() == 0:
+        return redirect("/")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        session["errormessage"] = "Invalid CSRF token"
+        return redirect("/createtopic")
     name = request.form["name"]
     description = request.form["description"]
     result = topics.create_topic(name, description, session["username"])
@@ -63,6 +75,8 @@ def topiccheck():
 
 @app.route("/<string:name>")
 def topic(name):
+    if check_user() == 0:
+        return redirect("/")
     id = topics.get_topic_id(name)
     list = posts.topicposts(id)
     owner_name = topics.get_topic_owner(id)
@@ -70,21 +84,29 @@ def topic(name):
 
 @app.route("/<string:name>/createpost")
 def createpost(name):
+    if check_user() == 0:
+        return redirect("/")
     topic_id = topics.get_topic_id(name)
     error = ""
     if "errormessage" in session:
         error = session["errormessage"]
         del session["errormessage"]
-    return render_template("createpost.html", topic_id=topic_id, error=error)
+    return render_template("createpost.html", topic_id=topic_id, topicname=name, error=error)
 
 @app.route("/addpost", methods=["POST"])
 def addpost():
+    topic_name = request.form["topic_name"]
+    page = "/" + topic_name
+    if check_user() == 0:
+        return redirect("/")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        session["errormessage"] = "Invalid CSRF token"
+        return redirect(page + "/createpost")
     topic_id = request.form["topic_id"]
     name = request.form["Title"]
     description = request.form["Text"]
     username = session["username"]
     topic_name = posts.create_post(topic_id, username, name, description)
-    page = "/" + topic_name
     if "errormessage" in session:
         return redirect(page + "/createpost")
     return redirect(page)
@@ -92,6 +114,8 @@ def addpost():
 
 @app.route("/<string:topic>/<int:id>")
 def post(topic, id):
+    if check_user() == 0:
+        return redirect("/")
     contents = posts.get_post(id)
     answers = comments.postcomments(id)
     session["url"] = request.base_url
@@ -101,6 +125,8 @@ def post(topic, id):
 
 @app.route("/<string:topic>/<int:id>/comment")
 def comment(topic, id):
+    if check_user() == 0:
+        return redirect("/")
     error = ""
     if "errormessage" in session:
         error = session["errormessage"]
@@ -114,6 +140,12 @@ def comment(topic, id):
 @app.route("/addcomment", methods=["POST"])
 def addcomment():
     post_url = request.form["post_url"]
+    page = post_url + "/comment"
+    if check_user() == 0:
+        return redirect("/")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        session["errormessage"] = "Invalid CSRF token"
+        return redirect(page)
     post_id = request.form["post_id"]
     content = request.form["comment"]
     username = session["username"]
@@ -121,13 +153,14 @@ def addcomment():
     result = comments.createcomment(post_id, username, content)
 
     if result == 0:
-        page = post_url + "/comment"
         return redirect(page)
     else:
         return redirect(post_url)
 
 @app.route("/<string:topic>/<int:post_id>/<int:comment_id>/respond")
 def respond(topic, post_id, comment_id):
+    if check_user() == 0:
+        return redirect("/")
     error = ""
     if "errormessage" in session:
         error = session["errormessage"]
@@ -139,6 +172,11 @@ def respond(topic, post_id, comment_id):
 @app.route("/addresponse", methods=["POST"])
 def addresponse():
     post_url = request.form["post_url"]
+    if check_user() == 0:
+        return redirect("/")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        session["errormessage"] = "Invalid CSRF token"
+        return redirect(post_url)
     comment_id = request.form["comment_id"]
     content = request.form["response"]
     username = session["username"]
@@ -154,10 +192,17 @@ def addresponse():
     
 @app.route("/delete/<string:type>/<int:id>")
 def delete(type, id):
+    if check_user() == 0:
+        return redirect("/")
     return render_template("commitdelete.html", type=type, id=id)
 
 @app.route("/commitdelete", methods=["POST"])
 def commitdelete():
+    if check_user() == 0:
+        return redirect("/")
+    if session["csrf_token"] != request.form["csrf_token"]:
+        session["errormessage"] = "Invalid CSRF token"
+        return "Permission denied"
     type = request.form["type"]
     id = request.form["id"]
     if type == "response":
