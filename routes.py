@@ -8,12 +8,20 @@ from sqlalchemy import text
 
 @app.route("/")
 def index():
+    try:
+        if "username" in session:
+            logged_in = 1
+        else:
+            logged_in = 0
+    except:
+        logged_in = 0
+
     error = ""
     if "errormessage" in session:
         error = session["errormessage"]
         del session["errormessage"] 
     list = topics.all_topics()
-    return render_template("index.html", error=error, topics=list)
+    return render_template("index.html", error=error, topics=list, logged_in=logged_in)
 
 @app.route("/logincheck", methods=["POST"])
 def logincheck():
