@@ -11,7 +11,7 @@ Keskustelupalstasovellus:
 
 -Käyttäjä pystyy kommentoimaan viestejä ja vastaamaan kommentteihin.
 
--Käyttäjä pystyy muokkaamaan tai poistamaan alueen, viestin, kommentin tai vastauksen.
+-Käyttäjä pystyy poistamaan alueen, viestin, kommentin tai vastauksen.
 
 -Viestiketjussa näkyy kaikki viestit ja kommentit ja niiden kirjoittaja ja lähetysajankohta, sekä vastaukset kommentteihin.
 
