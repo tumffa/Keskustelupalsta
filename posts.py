@@ -4,6 +4,7 @@ from topics import get_topic_id
 from sqlalchemy import text
 from flask import session
 from datetime import datetime
+import pytz
 
 def topicposts(id):
     sql = "SELECT name, description, id, username, date FROM posts WHERE topic_id=:id"
@@ -16,7 +17,7 @@ def create_post(topic_id, username, name, description):
     topic_name = result.fetchone()[0]
 
     if len(name) < 1:
-        session["errormessage"] = "Post title has to be atleast 1 character long"
+        session["errormessage"] = "Post title has to be atlseast 1 character long"
         return topic_name
     
     if len(name) > 250:
@@ -31,7 +32,8 @@ def create_post(topic_id, username, name, description):
     result = db.session.execute(text(sql), {"username":username})
     user_id = result.fetchone()[0]
 
-    now = datetime.now()
+    time = pytz.timezone("Europe/Helsinki")
+    now = datetime.now(time)
     date = now.strftime("%m/%d/%Y, %H:%M:%S")
 
     sql = "INSERT INTO posts (topic_id, user_id, username, name, description, date) VALUES (:topic_id, :user_id, :username, :name, :description, :date)"

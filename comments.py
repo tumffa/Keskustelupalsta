@@ -3,6 +3,7 @@ from db import db
 from sqlalchemy import text
 from flask import session
 from datetime import datetime
+import pytz
 
 def createcomment(post_id, username, content):
 
@@ -22,7 +23,8 @@ def createcomment(post_id, username, content):
         session["errormessage"] = "Max 3000 characters"
         return 0
     
-    now = datetime.now()
+    time = pytz.timezone("Europe/Helsinki")
+    now = datetime.now(time)
     date = now.strftime("%m/%d/%Y, %H:%M:%S")
 
     sql = "INSERT INTO comments(post_id, user_id, username, description, date) VALUES (:post_id, :user_id, :username, :description, :date)"
@@ -63,7 +65,8 @@ def createresponse(comment_id, username, content):
         session["errormessage"] = "Max 2000 characters"
         return 0
     
-    now = datetime.now()
+    time = pytz.timezone("Europe/Helsinki")
+    now = datetime.now(time)
     date = now.strftime("%m/%d/%Y, %H:%M:%S")
 
     sql = "INSERT INTO responses(comment_id, user_id, username, description, date) VALUES (:comment_id, :user_id, :username, :description, :date)"
