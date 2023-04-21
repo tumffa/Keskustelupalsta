@@ -12,9 +12,10 @@
 {% for post in list %}
 <li>
 <b>{{ post.name }}</b> Posted by: <b>{{ post.username }}</b>, {{ post.date }}<br>
-{{ post.description }}<p>
+{{ post.description }}<br>
 <a href="/topics/{{ topicname }}/{{ post.id }}">Enter discussion</a>
 <p>
+<br>
 {% endfor %}
 </ul>
 {% else %}
@@ -25,5 +26,6 @@
 , <a href="/delete/topic/{{ id }}">delete topic</a>
 {% endif %}
 {% endif %}
+<hr>
 <p><br>
 <a href="/">Go back</a>

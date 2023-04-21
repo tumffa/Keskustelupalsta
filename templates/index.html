@@ -2,20 +2,21 @@
 <h1>Welcome, {{ session.username }}!</h1>
 <p>
 <br>
+<a href="/createtopic">create new topic</a>
 <h2>Topics:</h2>
 <hr>
+<br>
 {% for topic in topics %}
 <p>
-<h3><b><a href="/topics/{{ topic.name }}">{{ topic.name }}</a></b></h3>
+<b><a href="/topics/{{ topic.name }}">{{ topic.name }}</a></b> (Posts: {{ topic.count }})
+{% if topic.description|length > 0 %}
+<br>
 {{ topic.description }}
-<p>
-<br>
-{% endfor %}
-<br>
-<li><a href="/createtopic">create new topic</a>
-<p>
-<hr>
+{% endif %}
 <br><br>
+{% endfor %}
+<hr>
+<br>
 <a href="/logout">Log out</a>
 
 {% else %}

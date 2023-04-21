@@ -4,7 +4,7 @@ from sqlalchemy import text
 from flask import session
 
 def all_topics():
-    sql = "SELECT name, description FROM topics"
+    sql = "SELECT name, description, (SELECT COUNT(*) AS count FROM posts WHERE topic_id = T.id) FROM topics T"
     result = db.session.execute(text(sql))
     return result.fetchall()
 
