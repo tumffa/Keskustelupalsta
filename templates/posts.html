@@ -1,23 +1,31 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<div class="p-3 mb-2 bg-secondary text-white">
 {% if list %}
 <h1>{{ topicname }}</h1>
 <p><br>
-<a href="/topics/{{ topicname }}/createpost">Create new post</a>
+<a class="text-white" href="/topics/{{ topicname }}/createpost">Create new post</a>
 {% if owner_name == session.username %}
-, <a href="/delete/topic/{{ id }}">delete topic</a>
+, <a class="text-white" href="/delete/topic/{{ id }}">delete topic</a>
 {% endif %}
 <p>
-<hr>
+</div>
+<div class="p-3 mb-2 bg-light text-black">
+<div style = "position:relative; left:10px;">
 <h3>Posts:</h3>
-<ul>
+<p>
+<div style = "position:relative; left:30px;">
 {% for post in list %}
-<li>
-<b>{{ post.name }}</b> Posted by: <b>{{ post.username }}</b>, {{ post.date }}<br>
-{{ post.description }}<br>
+<b>{{ post.name }}</b> Posted by: <b>{{ post.username }}</b>, {{ post.date }}
+{% if post.description|length > 0 %}
+<br>
+{{ post.description }}
+{% endif %}
+<br>
 <a href="/topics/{{ topicname }}/{{ post.id }}">Enter discussion</a>
 <p>
 <br>
 {% endfor %}
-</ul>
+</div>
 {% else %}
 <h1>This topic has not posts :(</h2>
 <p>
@@ -27,5 +35,7 @@
 {% endif %}
 {% endif %}
 <hr>
-<p><br>
-<a href="/">Go back</a>
+<p>
+<a class="d-inline p-2 bg-secondary text-white" href="/">Go back</a>
+</div>
+</div>
